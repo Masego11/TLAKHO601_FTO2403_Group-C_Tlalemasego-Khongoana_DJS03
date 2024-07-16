@@ -3,7 +3,7 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 let page = 1;
 let matches = books
 
-const elements = {
+const elementsObject = {
     listItems: document.querySelector('[data-list-items]'),
     searchEngines: document.querySelector('[data-search-genres]'),
     searchAuthors: document.querySelector('[data-search-authors]'),
@@ -50,7 +50,7 @@ for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
     starting.appendChild(element)
 }
 
-elements.listItems.appendChild(starting)
+elementsObject.listItems.appendChild(starting)
 
 const genreHtml = document.createDocumentFragment()
 const firstGenreElement = document.createElement('option')
@@ -65,7 +65,7 @@ for (const [id, name] of Object.entries(genres)) {
     genreHtml.appendChild(element)
 }
 
-elements.searchEngines.appendChild(genreHtml)
+elementsObject.searchEngines.appendChild(genreHtml)
 
 const authorsHtml = document.createDocumentFragment()
 const firstAuthorElement = document.createElement('option')
@@ -80,48 +80,48 @@ for (const [id, name] of Object.entries(authors)) {
     authorsHtml.appendChild(element) 
 }
 
-elements.searchAuthors.appendChild(authorsHtml)
+elementsObject.searchAuthors.appendChild(authorsHtml)
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    elements.settingsTheme.value = 'night'
+    elementsObject.settingsTheme.value = 'night'
     document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
     document.documentElement.style.setProperty('--color-light', '10, 10, 20');
 } else {
-    elements.settingsTheme.value = 'day'
+    elementsObject.settingsTheme.value = 'day'
     document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
     document.documentElement.style.setProperty('--color-light', '255, 255, 255');
 }
 
-elements.listButton.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
-elements.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
+elementsObject.listButton.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
+elementsObject.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
 
-elements.listButton.innerHTML = `
+elementsObject.listButton.innerHTML = `
     <span>Show more</span>
     <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
 `
 
-elements.searchCancel.addEventListener('click', () => {
-    elements.searchOverlay.open = false
+elementsObject.searchCancel.addEventListener('click', () => {
+    elementsObject.searchOverlay.open = false
 })
 
-elements.settingsCancel.addEventListener('click', () => {
-    elements.settingsOverlay.open = false
+elementsObject.settingsCancel.addEventListener('click', () => {
+    elementsObject.settingsOverlay.open = false
 })
 
-elements.headerSearch.addEventListener('click', () => {
-    elements.searchOverlay.open = true 
-    elements.searchTitle.focus()
+elementsObject.headerSearch.addEventListener('click', () => {
+    elementsObject.searchOverlay.open = true 
+    elementsObject.searchTitle.focus()
 })
 
-elements.headerSettings.addEventListener('click', () => {
-   elements.settingsOverlay.open = true 
+elementsObject.headerSettings.addEventListener('click', () => {
+   elementsObject.settingsOverlay.open = true 
 })
 
-elements.listClose.addEventListener('click', () => {
-    elements.listActive.open = false
+elementsObject.listClose.addEventListener('click', () => {
+    elementsObject.listActive.open = false
 })
 
-elements.settingsForm.addEventListener('submit', (event) => {
+elementsObject.settingsForm.addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
@@ -134,10 +134,10 @@ elements.settingsForm.addEventListener('submit', (event) => {
         document.documentElement.style.setProperty('--color-light', '255, 255, 255');
     }
     
-    elements.settingsOverlay.open = false
+    elementsObject.settingsOverlay.open = false
 })
 
-elements.searchForm.addEventListener('submit', (event) => {
+elementsObject.searchForm.addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const filters = Object.fromEntries(formData)
@@ -164,12 +164,12 @@ elements.searchForm.addEventListener('submit', (event) => {
     matches = result
 
     if (result.length < 1) {
-        elements.listMessage.classList.add('list__message_show')
+        elementsObject.listMessage.classList.add('list__message_show')
     } else {
-       elements.listMessage.classList.remove('list__message_show')
+       elementsObject.listMessage.classList.remove('list__message_show')
     }
 
-    elements.listItems.innerHTML = ''
+    elementsObject.listItems.innerHTML = ''
     const newItems = document.createDocumentFragment()
 
     for (const { author, id, image, title } of result.slice(0, BOOKS_PER_PAGE)) {
@@ -192,19 +192,19 @@ elements.searchForm.addEventListener('submit', (event) => {
         newItems.appendChild(element)
     }
 
-    elements.listItems.appendChild(newItems)
-    elements.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
+    elementsObject.listItems.appendChild(newItems)
+    elementsObject.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
 
-    elements.listButton.innerHTML = `
+    elementsObject.listButton.innerHTML = `
         <span>Show more</span>
         <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
     `
 
     window.scrollTo({top: 0, behavior: 'smooth'});
-    elements.searchOverlay.open = false
+    elementsObject.searchOverlay.open = false
 })
 
-elements.listButton.addEventListener('click', () => {
+elementsObject.listButton.addEventListener('click', () => {
     const fragment = document.createDocumentFragment()
 
     for (const { author, id, image, title } of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
@@ -227,11 +227,11 @@ elements.listButton.addEventListener('click', () => {
         fragment.appendChild(element)
     }
 
-    elements.listItems.appendChild(fragment)
+    elementsObject.listItems.appendChild(fragment)
     page += 1
 })
 
-elements.listItems.addEventListener('click', (event) => {
+elementsObject.listItems.addEventListener('click', (event) => {
     const pathArray = Array.from(event.path || event.composedPath())
     let active = null
 
@@ -251,11 +251,11 @@ elements.listItems.addEventListener('click', (event) => {
     }
     
     if (active) {
-        elements.listActive.open = true
-        elements.listBlur.src = active.image
-        elements.listImage.src = active.image
-        elements.listTitle.innerText = active.title
-        elements.listSubtitle.innerText = `${authors[active.author]} (${new Date(active.published).getFullYear()})`
-        elements.listDescription.innerText = active.description
+        elementsObject.listActive.open = true
+        elementsObject.listBlur.src = active.image
+        elementsObject.listImage.src = active.image
+        elementsObject.listTitle.innerText = active.title
+        elementsObject.listSubtitle.innerText = `${authors[active.author]} (${new Date(active.published).getFullYear()})`
+        elementsObject.listDescription.innerText = active.description
     }
 })
