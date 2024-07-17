@@ -210,3 +210,11 @@ elementsObject.listItems.addEventListener('click', (event) => {
     }
 });
 displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors);
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("./links.html")  // fetch request to get the links.html file 
+    .then((response) => response.text())  // extracts the text content 
+    .then((data) => {  
+         document.getElementById("linkstags").innerHTML = data; // inserts the fetched content into the element with ID links tags. 
+    });
+});
