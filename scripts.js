@@ -81,7 +81,8 @@ for (const [id, name] of Object.entries(authors)) {
 
 elementsObject.searchAuthors.appendChild(authorsHtml)
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+function toggleTheme(theme) { // Created the toggleTheme function which can be called to switch between night and day themes.
+if (theme === 'night')  {
     elementsObject.settingsTheme.value = 'night'
     document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
     document.documentElement.style.setProperty('--color-light', '10, 10, 20');
@@ -89,6 +90,8 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
     elementsObject.settingsTheme.value = 'day'
     document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
     document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+}
+
 }
 
 elementsObject.listButton.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
@@ -125,13 +128,7 @@ elementsObject.settingsForm.addEventListener('submit', (event) => {
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
 
-    if (theme === 'night') {
-        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
-    } else {
-        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
-    }
+    toggleTheme(theme); // called the toggleTheme in the form submissoion handler
     
     elementsObject.settingsOverlay.open = false
 })
