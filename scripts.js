@@ -206,7 +206,7 @@ elementsObject.listItems.addEventListener('click', (event) => {
         elementsObject.listImage.src = active.image
         elementsObject.listTitle.innerText = active.title
         elementsObject.listSubtitle.innerText = `${authors[active.author]} (${new Date(active.published).getFullYear()})`
-        elementsObject.listDescription.innerText = active.description
+        elementsObject.listDescription.innerText = active.description 
     }
 });
 displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors);
