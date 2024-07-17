@@ -3,7 +3,7 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 let page = 1;
 let matches = books
 
-const elementsObject = {
+const elementsObject = { // Object containing queryselectors
     listItems: document.querySelector('[data-list-items]'),
     searchEngines: document.querySelector('[data-search-genres]'),
     searchAuthors: document.querySelector('[data-search-authors]'),
@@ -28,42 +28,41 @@ const elementsObject = {
     listDescription: document.querySelector('[data-list-description]'),
 }
 
-const starting = document.createDocumentFragment()
+function displayBooks(matches, page, BOOKS_PER_PAGE, newItems, authors) { // Created a function called displayBooks to append book elements to documentFragmnet 
+    const fragment = document.createDocumentFragment()
 
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-    const element = document.createElement('button')
-    element.classList = 'preview'
-    element.setAttribute('data-preview', id)
+    const start = (page - 1) * BOOKS_PER_PAGE;
+    const end = page * BOOKS_PER_PAGE;
+    const booksToDisplay = matches.slice(start, end);
 
-    element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `
+    for (const { author, id, image, title } of booksToDisplay) {
+        const element = document.createElement('button')
+        element.classList = 'preview'
+        element.setAttribute('data-preview', id)
+    
+        element.innerHTML = `
+            <img
+                class="preview__image"
+                src="${image}"
+            />
+            
+            <div class="preview__info">
+                <h3 class="preview__title">${title}</h3>
+                <div class="preview__author">${authors[author]}</div>
+            </div>
+        `;
+        fragment.appendChild(element);
+    }
+    newItems.appendChild(fragment);
 
-    starting.appendChild(element)
 }
-
-elementsObject.listItems.appendChild(starting)
-
 const genreHtml = document.createDocumentFragment()
 const firstGenreElement = document.createElement('option')
 firstGenreElement.value = 'any'
 firstGenreElement.innerText = 'All Genres'
 genreHtml.appendChild(firstGenreElement)
 
-for (const [id, name] of Object.entries(genres)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    genreHtml.appendChild(element)
-}
+
 
 elementsObject.searchEngines.appendChild(genreHtml)
 
@@ -170,30 +169,10 @@ elementsObject.searchForm.addEventListener('submit', (event) => {
     }
 
     elementsObject.listItems.innerHTML = ''
-    const newItems = document.createDocumentFragment()
+    displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors); // display books is called inside the search form event listener to display filtered results 
 
-    for (const { author, id, image, title } of result.slice(0, BOOKS_PER_PAGE)) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
-    
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
 
-        newItems.appendChild(element)
-    }
-
-    elementsObject.listItems.appendChild(newItems)
-    elementsObject.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
+    elementsObject.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) <= 0;
 
     elementsObject.listButton.innerHTML = `
         <span>Show more</span>
@@ -205,31 +184,10 @@ elementsObject.searchForm.addEventListener('submit', (event) => {
 })
 
 elementsObject.listButton.addEventListener('click', () => {
-    const fragment = document.createDocumentFragment()
-
-    for (const { author, id, image, title } of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
-    
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-
-        fragment.appendChild(element)
-    }
-
-    elementsObject.listItems.appendChild(fragment)
-    page += 1
-})
+    page +=1;
+    displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors); // displayBooks is called to display more books as the user clicks show more. 
+   
+});
 
 elementsObject.listItems.addEventListener('click', (event) => {
     const pathArray = Array.from(event.path || event.composedPath())
@@ -258,4 +216,5 @@ elementsObject.listItems.addEventListener('click', (event) => {
         elementsObject.listSubtitle.innerText = `${authors[active.author]} (${new Date(active.published).getFullYear()})`
         elementsObject.listDescription.innerText = active.description
     }
-})
+});
+displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors);
