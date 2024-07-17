@@ -56,32 +56,27 @@ function displayBooks(matches, page, BOOKS_PER_PAGE, newItems, authors) { // Cre
     newItems.appendChild(fragment);
 
 }
-const genreHtml = document.createDocumentFragment()
-const firstGenreElement = document.createElement('option')
-firstGenreElement.value = 'any'
-firstGenreElement.innerText = 'All Genres'
-genreHtml.appendChild(firstGenreElement)
 
+function genreAuthorOptions (firstGenreElementText, items) { // Created the genreAuthorOptions function to generate options for both genres and authors. 
+    const fragment = document.createDocumentFragment()
+    const firstGenreElement = document.createElement('option')
+    firstGenreElement.value = 'any'
+    firstGenreElement.innerText = firstGenreElementText;
+    fragment.appendChild(firstGenreElement)
 
-
-elementsObject.searchEngines.appendChild(genreHtml)
-
-const authorsHtml = document.createDocumentFragment()
-const firstAuthorElement = document.createElement('option')
-firstAuthorElement.value = 'any'
-firstAuthorElement.innerText = 'All Authors'
-authorsHtml.appendChild(firstAuthorElement)
-
-for (const [id, name] of Object.entries(authors)) {
+for (const [id, name] of Object.entries(items)) {
     const element = document.createElement('option')
     element.value = id
     element.innerText = name 
-    authorsHtml.appendChild(element) 
+    fragment.appendChild(element) 
+}
+return fragment;
 }
 
-elementsObject.searchAuthors.appendChild(authorsHtml)
+elementsObject.searchAuthors.appendChild(genreAuthorOptions('All Authors', authors));
+elementsObject.searchEngines.appendChild(genreAuthorOptions('All Genres', genres));
 
-function toggleTheme(theme) { // Created the toggleTheme function which can be called to switch between night and day themes.
+function toggleTheme(theme) { // Created toggleTheme function which can be called to switch between night and day themes.
 if (theme === 'night')  {
     elementsObject.settingsTheme.value = 'night'
     document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
