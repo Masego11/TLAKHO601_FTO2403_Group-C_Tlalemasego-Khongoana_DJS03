@@ -96,38 +96,31 @@ elementsObject.listButton.innerHTML = `
     <span>Show more</span>
     <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
 `
-
+function myEventListeners () {
 elementsObject.searchCancel.addEventListener('click', () => {
     elementsObject.searchOverlay.open = false
-})
-
+});
 elementsObject.settingsCancel.addEventListener('click', () => {
     elementsObject.settingsOverlay.open = false
-})
-
+});
 elementsObject.headerSearch.addEventListener('click', () => {
     elementsObject.searchOverlay.open = true 
     elementsObject.searchTitle.focus()
-})
-
+});
 elementsObject.headerSettings.addEventListener('click', () => {
    elementsObject.settingsOverlay.open = true 
-})
-
+});
 elementsObject.listClose.addEventListener('click', () => {
     elementsObject.listActive.open = false
-})
-
+});
 elementsObject.settingsForm.addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
 
     toggleTheme(theme); // called the toggleTheme in the form submissoion handler
-    
     elementsObject.settingsOverlay.open = false
-})
-
+});
 elementsObject.searchForm.addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
@@ -173,7 +166,7 @@ elementsObject.searchForm.addEventListener('submit', (event) => {
 
     window.scrollTo({top: 0, behavior: 'smooth'});
     elementsObject.searchOverlay.open = false
-})
+});
 
 elementsObject.listButton.addEventListener('click', () => {
     page +=1;
@@ -209,9 +202,12 @@ elementsObject.listItems.addEventListener('click', (event) => {
         elementsObject.listDescription.innerText = active.description 
     }
 });
+
+}
 displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors);
 
 document.addEventListener("DOMContentLoaded", () => {
+    myEventListeners();
     fetch("./links.html")  // fetch request to get the links.html file 
     .then((response) => response.text())  // extracts the text content 
     .then((data) => {  
