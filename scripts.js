@@ -1,32 +1,11 @@
-import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
+import { books, authors, genres, BOOKS_PER_PAGE } from './utils/data.js';
+import { elementsObject } from './utils/tools.js';
+import { svgs } from './utils/assets.js';
 
 let page = 1;
 let matches = books
 
-const elementsObject = { // Object containing queryselectors
-    listItems: document.querySelector('[data-list-items]'),
-    searchEngines: document.querySelector('[data-search-genres]'),
-    searchAuthors: document.querySelector('[data-search-authors]'),
-    settingsTheme: document.querySelector('[data-settings-theme]'),
-    listButton: document.querySelector('[data-list-button]'),
-    searchCancel: document.querySelector('[data-search-cancel]'),
-    searchOverlay: document.querySelector('[data-search-overlay]'),
-    settingsCancel: document.querySelector('[data-settings-cancel]'),
-    settingsOverlay: document.querySelector('[data-settings-overlay]'),
-    headerSearch: document.querySelector('[data-header-search]'),
-    searchTitle: document.querySelector('[data-search-title]'),
-    headerSettings: document.querySelector('[data-header-settings]'),
-    listClose: document.querySelector('[data-list-close]'),
-    listActive: document.querySelector('[data-list-active]'),
-    settingsForm: document.querySelector('[data-settings-form]'),
-    searchForm: document.querySelector('[data-search-form]'),
-    listMessage: document.querySelector('[data-list-message]'),
-    listImage: document.querySelector('[data-list-image]'),
-    listBlur: document.querySelector('[data-list-blur]'),
-    listTitle: document.querySelector('[data-list-title]'),
-    listSubtitle: document.querySelector('[data-list-subtitle]'),
-    listDescription: document.querySelector('[data-list-description]'),
-}
+
 
 function displayBooks(matches, page, BOOKS_PER_PAGE, newItems, authors) { // Created a function called displayBooks to append book elements to documentFragmnet 
     const fragment = document.createDocumentFragment()
@@ -207,10 +186,14 @@ elementsObject.listItems.addEventListener('click', (event) => {
 displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors);
 
 document.addEventListener("DOMContentLoaded", () => {
-    myEventListeners(); // callS my event listeners function 
+    myEventListeners(); // calls my event listeners function 
     fetch("./links.html")  // fetch request to get the links.html file 
     .then((response) => response.text())  // extracts the text content 
     .then((data) => {  
          document.getElementById("linkstags").innerHTML = data; // inserts the fetched content into the element with ID links tags. 
     });
 });
+// fetched my elements from the DOM
+document.getElementById('headerLogo').innerHTML = svgs.headerShape + svgs.headerText; 
+document.getElementById('headerSearch').innerHTML = svgs.headerIconSearch;
+document.getElementById('headerSettings').innerHTML = svgs.headerIconSettings;
