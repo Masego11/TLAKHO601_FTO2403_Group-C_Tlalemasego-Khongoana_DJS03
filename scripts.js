@@ -96,7 +96,7 @@ elementsObject.listButton.innerHTML = `
     <span>Show more</span>
     <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
 `
-function myEventListeners () {
+function myEventListeners () { // Created function containing my eventlistners
 elementsObject.searchCancel.addEventListener('click', () => {
     elementsObject.searchOverlay.open = false
 });
@@ -118,7 +118,7 @@ elementsObject.settingsForm.addEventListener('submit', (event) => {
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
 
-    toggleTheme(theme); // called the toggleTheme in the form submissoion handler
+    toggleTheme(theme); // Called the toggleTheme in the form submissoion handler
     elementsObject.settingsOverlay.open = false
 });
 elementsObject.searchForm.addEventListener('submit', (event) => {
@@ -154,7 +154,7 @@ elementsObject.searchForm.addEventListener('submit', (event) => {
     }
 
     elementsObject.listItems.innerHTML = ''
-    displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors); // display books is called inside the search form event listener to display filtered results 
+    displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors); // Display books is called inside the search form event listener to display filtered results 
 
 
     elementsObject.listButton.disabled = (matches.length - (page * BOOKS_PER_PAGE)) <= 0;
@@ -170,7 +170,7 @@ elementsObject.searchForm.addEventListener('submit', (event) => {
 
 elementsObject.listButton.addEventListener('click', () => {
     page +=1;
-    displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors); // displayBooks is called to display more books as the user clicks show more. 
+    displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors); // DisplayBooks is called to display more books as the user clicks show more. 
    
 });
 
@@ -207,7 +207,7 @@ elementsObject.listItems.addEventListener('click', (event) => {
 displayBooks(matches, page, BOOKS_PER_PAGE, elementsObject.listItems, authors);
 
 document.addEventListener("DOMContentLoaded", () => {
-    myEventListeners();
+    myEventListeners(); // callS my event listeners function 
     fetch("./links.html")  // fetch request to get the links.html file 
     .then((response) => response.text())  // extracts the text content 
     .then((data) => {  
