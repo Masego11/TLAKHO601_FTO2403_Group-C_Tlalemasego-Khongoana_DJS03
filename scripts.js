@@ -1,5 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from './utils/data.js';
-import { elementsObject } from './utils/tools.js';
+import { elementsObject, BookPreview } from './utils/tools.js';
 import { svgs } from './utils/assets.js';
 
 let page = 1;
@@ -14,22 +14,16 @@ function displayBooks(matches, page, BOOKS_PER_PAGE, newItems, authors) { // Cre
     const end = page * BOOKS_PER_PAGE;
     const booksToDisplay = matches.slice(start, end);
 
+    // This for of loop iterates over the booksToDisplay array creating a custom HTML for each array
     for (const { author, id, image, title } of booksToDisplay) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
-    
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `;
+        const element = document.createElement('book-preview')
+        element.setAttribute('author', authors[author]);
+        element.setAttribute('id', id);
+        element.setAttribute('image', image);
+        element.setAttribute('title', title);
+        element.dataset.preview = id;  // Sets data-preview attribute with ID 
+         
+
         fragment.appendChild(element);
     }
     newItems.appendChild(fragment);
@@ -154,24 +148,15 @@ elementsObject.listButton.addEventListener('click', () => {
 });
 
 elementsObject.listItems.addEventListener('click', (event) => {
-    const pathArray = Array.from(event.path || event.composedPath())
-    let active = null
+    const pathArray = event.composedPath() // Used composedPath() to get the path of the event
+    let active = null;
 
     for (const node of pathArray) {
-        if (active) break
-
-        if (node?.dataset?.preview) {
-            let result = null
-    
-            for (const singleBook of books) {
-                if (result) break;
-                if (singleBook.id === node?.dataset?.preview) result = singleBook
-            } 
-        
-            active = result
+        if (node.dataset && node.dataset.preview){ // This checks for the data-preview attribute 
+            active = books.find(book => book.id  === node.dataset.preview);
+         break;  // Exits the loop once book is found
         }
     }
-    
     if (active) {
         elementsObject.listActive.open = true
         elementsObject.listBlur.src = active.image
@@ -191,9 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((response) => response.text())  // extracts the text content 
     .then((data) => {  
          document.getElementById("linkstags").innerHTML = data; // inserts the fetched content into the element with ID links tags. 
-    });
-});
-// fetched my elements from the Dom
+    }); 
+}); 
+// fetched my elements from the DOM
 document.getElementById('headerLogo').innerHTML = svgs.headerShape + svgs.headerText; 
 document.getElementById('headerSearch').innerHTML = svgs.headerIconSearch;
 document.getElementById('headerSettings').innerHTML = svgs.headerIconSettings;
