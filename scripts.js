@@ -1,5 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from './utils/data.js';
-import { elementsObject, BookPreview } from './utils/tools.js';
+import { elementsObject } from './utils/tools.js';
 import { svgs } from './utils/assets.js';
 
 let page = 1;
@@ -15,13 +15,21 @@ function displayBooks(matches, page, BOOKS_PER_PAGE, newItems, authors) { // Cre
     const booksToDisplay = matches.slice(start, end);
 
     for (const { author, id, image, title } of booksToDisplay) {
-        const element = document.createElement('book-preview')
-        element.setAttribute('author', authors[author]);
-        element.setAttribute('id', id);
-        element.setAttribute('image', image);
-        element.setAttribute('title', title);
-         
-
+        const element = document.createElement('button')
+        element.classList = 'preview'
+        element.setAttribute('data-preview', id)
+    
+        element.innerHTML = `
+            <img
+                class="preview__image"
+                src="${image}"
+            />
+            
+            <div class="preview__info">
+                <h3 class="preview__title">${title}</h3>
+                <div class="preview__author">${authors[author]}</div>
+            </div>
+        `;
         fragment.appendChild(element);
     }
     newItems.appendChild(fragment);
@@ -185,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
          document.getElementById("linkstags").innerHTML = data; // inserts the fetched content into the element with ID links tags. 
     });
 });
-// fetched my elements from the DOM
+// fetched my elements from the Dom
 document.getElementById('headerLogo').innerHTML = svgs.headerShape + svgs.headerText; 
 document.getElementById('headerSearch').innerHTML = svgs.headerIconSearch;
 document.getElementById('headerSettings').innerHTML = svgs.headerIconSettings;

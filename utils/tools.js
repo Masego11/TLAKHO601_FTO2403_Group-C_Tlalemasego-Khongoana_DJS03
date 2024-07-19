@@ -24,7 +24,7 @@ export const elementsObject = { // Object containing queryselectors
     listDescription: document.querySelector('[data-list-description]'),
 }
 
-class BookPreview extends HTMLElement {
+/*class BookPreview extends HTMLElement {
   static get attributes() { // defines an array of attribute names 
     return ["author", "id", "image", "title"];
   }
@@ -85,4 +85,4 @@ class BookPreview extends HTMLElement {
     }
   }
   customElements.define("book-preview", BookPreview);
-  export {BookPreview};
+  export {BookPreview}; */
