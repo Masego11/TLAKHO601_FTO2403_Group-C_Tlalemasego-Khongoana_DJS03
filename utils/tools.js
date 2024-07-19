@@ -24,7 +24,7 @@ export const elementsObject = { // Object containing queryselectors
     listDescription: document.querySelector('[data-list-description]'),
 }
 
-/*class BookPreview extends HTMLElement {
+class BookPreview extends HTMLElement {
   static get attributes() { // defines an array of attribute names 
     return ["author", "id", "image", "title"];
   }
@@ -33,24 +33,28 @@ export const elementsObject = { // Object containing queryselectors
       this.attachShadow({ mode: "open" });
     }
 
-    connectedCallBack() {  // Method used to render element's content
+    connectedCallback() {  // Method used to render element's content
       this.render();
     }
 
-      render() {
+      render() {   // Attribute values are retrieved and assigned to a variable 
         const author= this.getAttribute("author");
         const id= this.getAttribute("id");
         const image= this.getAttribute("image");
         const title= this.getAttribute("title");
       
-
+          // css styling and structure of my html elements
       this.shadowRoot.innerHTML = `<style>
                 .preview {
                     display: flex;
                     align-items: center;
                     cursor: pointer;
-                    border: none;
-                    padding: 5pax;
+                    border: 1px solid;
+                    padding: 10px;
+                    border-radius: 10px; 
+                    width: 250px;
+                    height: 180px;
+                    text-aign: center; 
                   
                 }
 
@@ -74,7 +78,7 @@ export const elementsObject = { // Object containing queryselectors
                     font-size 0.75rem;
                 }
             </style>
-     <button class="preview" data-preview>
+     <button class="preview" data-preview>  
      <img class="preview__image" src="${image}">
      <div class="preview__info">
      <h3 class="preview__title">${title}</h3>
@@ -84,5 +88,5 @@ export const elementsObject = { // Object containing queryselectors
        `;
     }
   }
-  customElements.define("book-preview", BookPreview);
-  export {BookPreview}; */
+  customElements.define("book-preview", BookPreview);  
+  export {BookPreview}; 
