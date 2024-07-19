@@ -1,3 +1,4 @@
+
 export const elementsObject = { // Object containing queryselectors
     listItems: document.querySelector('[data-list-items]'),
     searchEngines: document.querySelector('[data-search-genres]'),
@@ -22,3 +23,66 @@ export const elementsObject = { // Object containing queryselectors
     listSubtitle: document.querySelector('[data-list-subtitle]'),
     listDescription: document.querySelector('[data-list-description]'),
 }
+
+class BookPreview extends HTMLElement {
+  static get attributes() { // defines an array of attribute names 
+    return ["author", "id", "image", "title"];
+  }
+    constructor() {
+      super();
+      this.attachShadow({ mode: "open" });
+    }
+
+    connectedCallBack() {  // Method used to render element's content
+      this.render();
+    }
+
+      render() {
+        const author= this.getAttribute("author");
+        const id= this.getAttribute("id");
+        const image= this.getAttribute("image");
+        const title= this.getAttribute("title");
+      
+
+      this.shadowRoot.innerHTML = `<style>
+                .preview {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    border: none;
+                    padding: 5pax;
+                  
+                }
+
+                .preview__image {
+                  width: 50px;
+                  height: 60px;
+                  object-fit: cover;
+                  margin-right: 10px;
+        
+                .preview__info {
+                    display: flex; 
+                    flex-direction: column;
+                }
+                .preview__title 
+                    font-size: 1rem
+                    font-weight: bold;
+                    margin:0;
+                   
+                }
+                .preview__author {
+                    font-size 0.75rem;
+                }
+            </style>
+     <button class="preview" data-preview>
+     <img class="preview__image" src="${image}">
+     <div class="preview__info">
+     <h3 class="preview__title">${title}</h3>
+     <div class="preview__author">${author}<p>
+     </div>
+     </button>
+       `;
+    }
+  }
+  customElements.define("book-preview", BookPreview);
+  export {BookPreview};
